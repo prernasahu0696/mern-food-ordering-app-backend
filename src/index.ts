@@ -9,6 +9,7 @@ mongoose
   .then(() => console.log("Connected to database"));
 
 const app = express();
+const port = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(cors());
@@ -21,6 +22,6 @@ app.get("/health", async (req: Request, res: Response) => {
 // user api
 app.use("/api/my/user", myUserRoute);
 
-app.listen(4000, () => {
+app.listen(port, () => {
   console.log("Server started on localhost: 4000");
 });
