@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoute";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
 import restaurantRoute from "./routes/RestaurantRoute";
+import orderRoute from "./routes/OrderRoute";
 import { v2 as cloudinary } from "cloudinary";
 
 mongoose
@@ -18,9 +19,11 @@ cloudinary.config({
 });
 
 const app = express();
+app.use(cors());
+
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 
 app.use(express.json());
-app.use(cors());
 
 // health check of the server
 app.get("/health", async (req: Request, res: Response) => {
@@ -35,6 +38,9 @@ app.use("/api/my/restaurant", myRestaurantRoute);
 
 // restaurant search
 app.use("/api/restaurant", restaurantRoute);
+
+// payment
+app.use("/api/order", orderRoute);
 
 app.listen(4000, () => {
   console.log("Server started on localhost: 4000");
